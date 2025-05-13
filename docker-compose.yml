@@ -1,0 +1,7 @@
+services:
+  mathlibdepsextractor:
+    image: mathlibdepsextractor
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      
