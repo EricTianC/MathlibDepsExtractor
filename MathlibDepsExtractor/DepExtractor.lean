@@ -1,3 +1,5 @@
+-- modified from https://github.com/patrik-cihal/lean-graph
+
 import Lean
 import Lean.Data.Json.FromToJson
 import Std.Data.HashSet

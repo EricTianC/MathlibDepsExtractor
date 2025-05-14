@@ -59,7 +59,7 @@ def ext_main : Lean.Elab.Term.TermElabM PUnit := do
   let refs := List.mergeSort refs (fun a b => a.toString < b.toString)
   -- refs 均为所需的命名空间
   -- if IO.FS.dir IO.FS.createDir "extracted"
-  let console := System.mkFilePath ["extracted", "log.stdout"]
+  let console := System.mkFilePath ["MathlibDepsExtractor", "extracted", "log.stdout"]
   let logfile ← IO.FS.readFile console
   let latest_name := (((logfile.trim.splitOn "\n").getLastD "").splitOn " ").getD 1 ""
   let refs := refs.filter (fun ref => ref.toString > latest_name)
@@ -72,7 +72,7 @@ def ext_main : Lean.Elab.Term.TermElabM PUnit := do
     IO.println s!"starting-from {latest_name}"
     (← IO.getStdout).flush
     IOTermElab.build (enumerated.forM (m := TermElabM) fun (ref, i) ↦ do
-      let target := System.mkFilePath ["extracted", ref.toString.append ".json"]
+      let target := System.mkFilePath ["MathlibDepsExtractor", "extracted", ref.toString.append ".json"]
       let nonempty ← if ! (← target.pathExists) then
         serializeAndWriteToFileInDir (.Namespace ref.toString) 1 "extracted"
       else
@@ -90,4 +90,4 @@ def ext_main : Lean.Elab.Term.TermElabM PUnit := do
 
   IO.println "Bye Mathlib4"
 
--- #eval ext_main
+#eval ext_main
