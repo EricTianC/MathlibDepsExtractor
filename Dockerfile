@@ -32,7 +32,6 @@ RUN elan toolchain install $(cat lean-toolchain) \
 COPY --chown=leanuser:leanuser . /home/leanuser/mathlibdepsextractor
 # RUN sudo chown -R leanuser:leanuser /home/leanuser/mathlibdepsextractor
 WORKDIR /home/leanuser/mathlibdepsextractor
-RUN lake exe cache get \
-    && lake build
+RUN lake exe cache get
 
-CMD [ "bash", "-l" ]
+CMD [ "lake", "build" ]
