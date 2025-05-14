@@ -25,12 +25,13 @@ WORKDIR /home/leanuser
 RUN curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh | sh -s -- -y
 ENV PATH="/home/leanuser/.elan/bin:${PATH}"
 
-COPY . /home/leanuser/mathlibdepsextractor
-RUN sudo chown -R leanuser:leanuser /home/leanuser/mathlibdepsextractor
-WORKDIR /home/leanuser/mathlibdepsextractor
+COPY lean-toolchain /home/leanuser/lean-toolchain
 RUN elan toolchain install $(cat lean-toolchain) \
     && elan default $(cat lean-toolchain) \
     && lake --version
+COPY --chown=leanuser:leanuser . /home/leanuser/mathlibdepsextractor
+# RUN sudo chown -R leanuser:leanuser /home/leanuser/mathlibdepsextractor
+WORKDIR /home/leanuser/mathlibdepsextractor
 RUN lake exe cache get \
     && lake build
 
